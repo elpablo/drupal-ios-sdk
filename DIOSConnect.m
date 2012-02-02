@@ -41,6 +41,9 @@
 #import "NSData+Base64.h"
 #import "DIOSConfig.h"
 
+
+#define DRUPAL_SERVICE @"plist_services"
+
 @implementation DIOSConnect
 
 @synthesize connResult, sessid, params, userInfo, methodUrl, responseStatusMessage, requestMethod, error, progressDelegate;
