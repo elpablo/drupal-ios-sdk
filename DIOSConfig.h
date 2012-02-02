@@ -35,31 +35,26 @@
 //
 // ***** END LICENSE BLOCK *****
 
-#define DEV
 //#define STAGE
+#define DEV
 
 
 #ifdef STAGE
 
 #define DRUPAL_API_KEY  @""
-//#define DRUPAL_SERVICES_URL  @"http://stage.example.com/services/plist"
-//#define DRUPAL_URL  @"http://stage.example.com"
-//#define DRUPAL_DOMAIN @"stage.example.com" 
-#define DRUPAL_SERVICES_URL  @"http://trainingTest.dyndns.biz/drupalSite/plist_services"
-#define DRUPAL_URL  @"http://trainingTest.dyndns.biz/drupalSite/"
-#define DRUPAL_DOMAIN @"trainingTest.dyndns.biz"
+#define DRUPAL_SERVICES_URL  @"http://stage.example.com/services/plist"
+#define DRUPAL_URL  @"http://stage.example.com"
+#define DRUPAL_DOMAIN @"stage.example.com" 
 
 #endif
 
 #ifdef DEV
 
-#define DRUPAL_API_KEY  @""
-#define DRUPAL_SERVICES_URL  @"http://10.0.1.9/myTPSite/plist_services"
-#define DRUPAL_URL  @"http://10.0.1.9/myTPSite"
-#define DRUPAL_DOMAIN @"10.0.1.9"
-
+#define DRUPAL_API_KEY  @"4b2d7ef98d720386e0d2022842847404"
+#define DRUPAL_SERVICES_URL  @"http://publisherios.workhabit.com/api"
+#define DRUPAL_URL  @"http://publisherios.workhabit.com/"
+#define DRUPAL_DOMAIN @"publisherios.workhabit.com" 
 #endif
-
 //THis is the constant for none in Drupal7 http://api.drupal.org/api/constant/LANGUAGE_NONE/7
 #define DRUPAL_LANGUAGE @"und"
 #define DRUPAL_CELL_DEFAULT_IMAGE @"http://demo.kylebrowning.com/sites/default/files/imagecache/iphone/4986607783_45b49e2493_o.jpg"
@@ -70,5 +65,3 @@
 #define DRUPAL_CATEGORY_VID @"1"
 #define DRUPAL_VIEWS_IMAGE_FIELD @"files_node_data_field_image_filepath"
 #define DRUPAL_NODE_IMAGE_FIELD @"field_image"
-
-#define DRUPAL_SERVICE @"plist_services"
