@@ -12,7 +12,7 @@ This GETs you a Drupal node and stores it in an NSDictionary, myNode.
 
 What you need to get started
 ================================
-####XCode
+#### XCode
 * This library
 * the following frameworks
   - UIKit.Framework
@@ -22,17 +22,14 @@ What you need to get started
   - SystemConfiguration.framework
   - MobileCoreServices.framework
   * ASIHTTPRequest which can be found [here](http://github.com/pokeb/asi-http-request)
+
 * Update DIOSConfig.h with the correct API_KEYS SERVICES_URL and DOMAIN (make sure you checkout the drupal-ios-sdk branch for your version of drupal eg. 6.x-2.x, 6.x-3.x or 7.x-3.x)
 
-####Drupal 6.x-2.x (NOT RECOMMENDED, Services 2.x is running 5 year old code. I would suggest using 3.x now that it is in RC stage.
-* [PLIST Server](http://drupal.org/project/plist_server)
-* [services 2.4](http://drupal.org/project/services)
-
-####Drupal 6.x-3.x and 7.x-3.x (RECOMMENDED)
+#### Drupal 7.x-3.x (RECOMMENDED)
 * [Services](http://github.com/kylebrowning/services)
 * [REST SERVER PLIST](http://drupal.org/project/rest_server_plist)
 
-####Note, Services 3.x does not have an API key, it doesn't use them, IT HAS BEEN REMOVED. Use oAuth if you need extra Security.
+#### Note, Services 3.x does not have an API key, it doesn't use them, IT HAS BEEN REMOVED. Use oAuth if you need extra Security.
 
 Demo Code (Code is pulled from [http://github.com/workhabitinc/drupal-ios-sdk-example](http://github.com/workhabitinc/drupal-ios-sdk-example))
 ======================
@@ -137,7 +134,7 @@ If you are getting Access denied, or API Key not valid, double check that your k
 
 X service doesnt exist in Drupal iOS SDK
 ----------
-Thats ok, just subclass DIOSConnect and follow the model of tthe other DIOS classes. If its a core services Class and I have not added it in, please help us all out and contribute it by by doing a pull request. Thanks!
+Thats ok, just subclass DIOSConnect and follow the model of the other DIOS classes. If its a core services Class and I have not added it in, please help us all out and contribute it by by doing a pull request. Thanks!
 
 Questions
 ----------

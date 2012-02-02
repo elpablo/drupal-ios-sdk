@@ -34,48 +34,35 @@
 // file under either the MPL or the GPL.
 //
 // ***** END LICENSE BLOCK *****
+
 #import <Foundation/Foundation.h>
 
-@interface DIOSConnect : NSObject {
-  NSDictionary *connResult;
-  NSMutableDictionary *params;
-  NSDictionary *myDict;
-  NSString *sessid;
-  NSString *method;
-  NSDictionary *userInfo;
-  BOOL isRunning;
-  NSTimer *mainTimer;
-  NSString *methodUrl;
-  NSString *responseStatusMessage;
-  NSString *requestMethod;
-  NSError *error;
-  id progressDelegate;
-}
-@property (nonatomic, retain) NSDictionary *connResult;
+@interface DIOSConnect : NSObject 
+
+
+@property (nonatomic, retain) id connResult;
 @property (nonatomic, retain) id progressDelegate;
 @property (nonatomic, retain) NSString *sessid;
-@property (nonatomic, retain) NSString *method;
 @property (nonatomic, retain) NSMutableDictionary *params;
 @property (nonatomic, retain) NSDictionary *userInfo;
+@property (nonatomic, copy)   NSString *serverUrl;
 @property (nonatomic, retain) NSString *methodUrl;
 @property (nonatomic, retain) NSString *responseStatusMessage;
 @property (nonatomic, retain) NSString *requestMethod;
 @property (nonatomic, readonly) NSError *error;
 
-- (id) init;
-- (void) initWithSessId:(NSString*)aSessId;
-- (void) initWithUserInfo:(NSDictionary*)someUserInfo andSessId:(NSString*)sessId;
-- (void) runMethod;
-- (void) addParam:(id)value forKey:(NSString *)key;
-- (void) removeParam:(NSString *)key;
-- (void) connect;
-- (NSDictionary *) loginWithUsername:(NSString*)userName andPassword:(NSString*)password;
-- (NSDictionary *) logout;
-- (void) connect;
-- (NSString *) buildParams;
-- (NSString *) genRandStringLength;
-- (NSString *)generateHash:(NSString *)inputString;
-- (void)serializedObject:(NSMutableDictionary *)object;
-- (void)serializedArray:(NSArray *)array;
-- (id) initWithSession:(DIOSConnect*)aSession;
+- (id)init;
+- (id)initWithSession:(DIOSConnect*)aSession;
+// Use method below passing the URL in which is located your Drupal7 installation
+// to avoid writing it in the DIOSConfig.h
+- (id)initWithServerURL:(NSString *)url;
+
+- (void)runMethod;
+
+- (NSString *)buildParams;
+- (void)addParam:(id)value forKey:(NSString *)key;
+- (void)removeParam:(NSString *)key;
+
+- (void)connect;
+
 @end

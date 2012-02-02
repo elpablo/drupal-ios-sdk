@@ -34,15 +34,20 @@
 // file under either the MPL or the GPL.
 //
 // ***** END LICENSE BLOCK *****
+
 #import <Foundation/Foundation.h>
 #import "DIOSConnect.h"
 
-@interface DIOSUser : DIOSConnect {
+@interface DIOSUser : DIOSConnect
 
-}
-- (NSDictionary *) loginWithUsername:(NSString*)userName andPassword:(NSString*)password;
-- (NSDictionary *) logout;
-- (NSDictionary *) userSave:(NSMutableDictionary *)userDict;
-- (NSDictionary *) userDelete:(NSString*)uid;
-- (NSDictionary *) userGet:(NSString*)uid;
+- (NSDictionary *)loginWithUsername:(NSString*)userName andPassword:(NSString*)password;
+- (NSDictionary *)logout;
+
+- (NSDictionary *)userCreate:(NSMutableDictionary *)userDict;
+- (NSDictionary *)userSave:(NSMutableDictionary *)userDict;
+- (NSDictionary *)userGet:(NSString*)uid;
+- (NSDictionary *)userDelete:(NSString*)uid;
+
+- (NSDictionary *)setRoles:(NSDictionary *)userRoles forUser:(NSString*)uid;
+
 @end

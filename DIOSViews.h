@@ -34,13 +34,15 @@
 // file under either the MPL or the GPL.
 //
 // ***** END LICENSE BLOCK *****
+
 #import <Foundation/Foundation.h>
 #import "DIOSConnect.h"
 
-@interface DIOSViews : DIOSConnect {
+@interface DIOSViews : DIOSConnect
 
-}
-- (id) init;
-- (void) initViews;
--(NSDictionary *) viewsGet:(NSString *)viewName;
+- (void)initViews;
+
+- (NSArray *)viewsGet:(NSString *)viewName;
+- (NSArray *)viewsGet:(NSString *)viewName andArguments:(NSString *)args;
+
 @end

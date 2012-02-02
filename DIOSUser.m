@@ -38,53 +38,89 @@
 
 
 @implementation DIOSUser
--(id) init {
-  [super init];
-  return self;
-}
-- (NSDictionary *) loginWithUsername:(NSString*)userName andPassword:(NSString*)password {
-  [self setMethod:@"user.login"];
-  [self setMethodUrl:@"user/login"];
-  [self addParam:userName forKey:@"username"];
-  [self addParam:password forKey:@"password"];
-  [self runMethod];
-  return [self connResult];
+- (id)init {
+    self = [super init];
+    return self;
 }
 
-- (NSDictionary *) logout {
-  [self setMethod:@"user.logout"];
+- (NSDictionary *)loginWithUsername:(NSString*)userName andPassword:(NSString*)password {
+//    [self setMethod:@"user.login"];
+    [self setMethodUrl:@"user/login"];
+    [self addParam:userName forKey:@"username"];
+    [self addParam:password forKey:@"password"];
+    [self runMethod];
+    return [self connResult];
+}
+
+- (NSDictionary *)logout {
+//  [self setMethod:@"user.logout"];
   [self setMethodUrl:@"user/logout"];
   [self runMethod];
   return [self connResult];
 }
-- (NSDictionary *) userSave:(NSMutableDictionary *)userDict {
-  [self setMethod:@"user.save"];
-  [self setMethodUrl:@"user"];
-  if ([userDict objectForKey:@"uid"] != nil && ![[userDict objectForKey:@"uid"] isEqualToString:@""]) {
-    [self setMethodUrl:[NSString stringWithFormat:@"user/%@", [userDict objectForKey:@"uid"]]];
-    [self setRequestMethod:@"PUT"];
-    [self addParam:userDict forKey:@"data"];
-    [self addParam:[userDict objectForKey:@"uid"] forKey:@"uid"];
-  } else {
+
+- (NSDictionary *)userCreate:(NSMutableDictionary *)userDict {
+//    [self setMethod:@"user.save"];
+    [self setMethodUrl:@"user/register"];
+    
+    [self addParam:[userDict objectForKey:@"name"] forKey:@"name"];
+    [self addParam:[userDict objectForKey:@"mail"] forKey:@"mail"];
+    [self addParam:[userDict objectForKey:@"pass"] forKey:@"pass"];
     [self addParam:userDict forKey:@"account"];
-  }
-  
-  [self runMethod];
-  return [self connResult];
+    
+    [self runMethod];
+    return (NSDictionary *)[self connResult];
 }
-- (NSDictionary *) userGet:(NSString*)uid {
-  [self setMethod:@"user.get"];
-  [self setRequestMethod:@"GET"];
-  [self setMethodUrl:[NSString stringWithFormat:@"user/%@", uid]];
-  [self runMethod];
-  
-  return [self connResult];
+
+- (NSDictionary *)setRoles:(NSDictionary *)userRoles forUser:(NSString*)uid {
+//    [self setMethod:@"user.save"];
+    if (uid != nil && ![uid isEqualToString:@""]) {
+        [self setMethodUrl:[NSString stringWithFormat:@"user/%@", uid]];
+        [self setRequestMethod:@"PUT"];
+        [self addParam:@"" forKey:@"data"];
+        [self addParam:userRoles forKey:@"roles"];
+        [self addParam:uid forKey:@"uid"];
+    }    
+    
+    [self runMethod];
+    return (NSDictionary *)[self connResult];
 }
-- (NSDictionary *) userDelete:(NSString*)uid {
-  [self setMethod:@"user.delete"];
-  [self setRequestMethod:@"DELETE"];
-  [self setMethodUrl:[NSString stringWithFormat:@"user/%@", uid]];
-  [self runMethod];
-  return [self connResult];
+
+- (NSDictionary *)userSave:(NSMutableDictionary *)userDict {
+//    [self setMethod:@"user.save"];
+    [self setMethodUrl:@"user/register"];
+    if ([userDict objectForKey:@"uid"] != nil && ![[userDict objectForKey:@"uid"] isEqualToString:@""]) {
+        [self setMethodUrl:[NSString stringWithFormat:@"user/%@", [userDict objectForKey:@"uid"]]];
+        [self setRequestMethod:@"PUT"];
+        [self addParam:userDict forKey:@"data"];
+        [self addParam:[userDict objectForKey:@"roles"] forKey:@"roles"];
+        [self addParam:[userDict objectForKey:@"uid"] forKey:@"uid"];
+    } else {
+        [self addParam:[userDict objectForKey:@"name"] forKey:@"name"];
+        [self addParam:[userDict objectForKey:@"mail"] forKey:@"mail"];
+        [self addParam:[userDict objectForKey:@"pass"] forKey:@"pass"];
+        [self addParam:userDict forKey:@"account"];
+    }
+
+    [self runMethod];
+    return [self connResult];
 }
+
+- (NSDictionary *)userGet:(NSString*)uid {
+//    [self setMethod:@"user.get"];
+    [self setRequestMethod:@"GET"];
+    [self setMethodUrl:[NSString stringWithFormat:@"user/%@", uid]];
+    [self runMethod];
+
+    return [self connResult];
+}
+
+- (NSDictionary *)userDelete:(NSString*)uid {
+//    [self setMethod:@"user.delete"];
+    [self setRequestMethod:@"DELETE"];
+    [self setMethodUrl:[NSString stringWithFormat:@"user/%@", uid]];
+    [self runMethod];
+    return [self connResult];
+}
+
 @end

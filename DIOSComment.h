@@ -38,13 +38,24 @@
 #import <Foundation/Foundation.h>
 #import "DIOSConnect.h"
 
-@interface DIOSComment : DIOSConnect {
-}
+@interface DIOSComment : DIOSConnect
 
-- (id) init;
-- (NSDictionary *) getComments:(NSString*)nid andStart:(NSString *)start andCount:(NSString *)count;
-- (void) addComment:(NSString*)nid subject:(NSString*)aSubject body:(NSString*)aBody;
-- (NSDictionary *) getCommentCountNewForNid:(NSString*)nid;
-- (NSDictionary *) getCommentCountForNid:(NSString*)nid;
-- (NSDictionary *) getComment:(NSString*)cid;
+
+- (id)init;
+
+// Comment retrievement
+- (NSDictionary *)getComments:(NSString*)nid andStart:(NSString *)start andCount:(NSString *)count;
+- (NSInteger)getCommentCountNewForNid:(NSString*)nid;
+- (NSInteger)getCommentCountForNid:(NSString*)nid;
+- (NSDictionary *)getComment:(NSString*)cid;
+- (NSArray *)allCommentsForNodeID:(NSString*)nid;
+
+// Comment add
+- (NSDictionary *)addComment:(NSString*)nid subject:(NSString*)aSubject body:(NSString*)aBody;
+- (NSDictionary *)addComment:(NSDictionary *)comment;
+- (id)updateComment:(NSString*)cid withData:(NSDictionary *)data;
+
+// Comment deletion
+- (BOOL)deleteComment:(NSString*)cid;
+
 @end

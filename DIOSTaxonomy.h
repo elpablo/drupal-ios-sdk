@@ -38,12 +38,23 @@
 #import <Foundation/Foundation.h>
 #import "DIOSConnect.h"
 
-@interface DIOSTaxonomy : DIOSConnect {
+@interface DIOSTaxonomy : DIOSConnect
 
-}
-- (NSDictionary *)getTree:(NSString*)vid;
-- (NSDictionary *)getTree:(NSString*)vid withParent:(NSString*)parent andMaxDepth:(NSString*)maxDepth;
-- (NSDictionary *)selectNodes:(NSString*)tid;
-- (NSDictionary *)selectNodes:(NSString*)tid andLimit:(NSString*)depth pager:(BOOL)pager andOrder:(NSString*)anOrder;
+
+- (NSArray *)getTree:(NSString*)vid;
+- (NSArray *)getTree:(NSString*)vid withParent:(NSString*)parent andMaxDepth:(NSString*)maxDepth;
+
+- (NSArray *)selectNodes:(NSString*)tid;
+- (NSArray *)selectNodes:(NSString*)tid andLimit:(NSString*)depth pager:(BOOL)pager andOrder:(NSString*)anOrder;
+
 - (NSDictionary *)getTerm:(NSString*)tid;
+
+- (NSDictionary *)createVocabulary:(NSString *)name;
+- (NSDictionary *)getVocabulary:(NSString *)vid;
+- (NSArray *)allVocabulary;
+- (NSDictionary *)updateVocabulary:(NSString *)vid withFields:(NSMutableDictionary *)items;
+
+- (id)createTermInVocabulary:(NSMutableDictionary*)term;
+- (void)deleteTerm:(NSString*)tid;
+
 @end

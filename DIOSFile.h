@@ -34,13 +34,15 @@
 // file under either the MPL or the GPL.
 //
 // ***** END LICENSE BLOCK *****
+
 #import <Foundation/Foundation.h>
 #import "DIOSConnect.h"
 
-@interface DIOSFile : DIOSConnect {
+@interface DIOSFile : DIOSConnect
 
-}
-- (NSDictionary *) fileSave:(NSMutableDictionary *)fileDict;
-- (NSDictionary *) fileGet:(NSString *)fid;
-- (NSDictionary *) fileGetNodeFiles:(NSString *)nid;
+- (NSDictionary *)fileSave:(NSMutableDictionary *)fileDict;
+- (NSDictionary *)fileGet:(NSString *)fid;
+- (NSDictionary *)fileGet:(NSString *)fid includeFileContent:(BOOL)fc;
+- (NSDictionary *)fileGetNodeFiles:(NSString *)nid;
+
 @end

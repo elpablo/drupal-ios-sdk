@@ -38,11 +38,16 @@
 #import <Foundation/Foundation.h>
 #import "DIOSConnect.h"
 
-@interface DIOSNode : DIOSConnect {
-}
+@interface DIOSNode : DIOSConnect
 
--(NSDictionary *) nodeGet:(NSString *)anNid;
--(NSDictionary *) nodeSave:(NSMutableDictionary *)node;
--(NSDictionary *) nodeDelete:(NSString *)nid;
--(NSDictionary *) nodeGetIndex;
+
+- (NSDictionary *)nodeGet:(NSString *)anNid;
+- (NSArray *)nodeGetIndex;
+- (NSArray *)nodeSearchFromTitle:(NSString *)title;
+
+- (NSDictionary *)nodeSave:(NSMutableDictionary *)node;
+- (NSDictionary *)nodeUpdate:(NSString *)nid withField:(NSMutableDictionary *)fields;
+
+- (NSDictionary *)nodeDelete:(NSString *)nid;
+
 @end

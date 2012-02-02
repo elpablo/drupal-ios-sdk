@@ -40,97 +40,134 @@
 #import "DIOSConfig.h"
 
 @implementation DIOSComment
-- (id) init {
-  [super init];
-  return self;
+- (id)init {
+    self = [super init];
+    return self;
 }
 
-- (NSDictionary *) getComments:(NSString*)nid andStart:(NSString *)start andCount:(NSString *)count {
-  [self setMethod:@"comment.loadNodeComments"];
-  [self setRequestMethod:@"GET"];
-  NSString *url = [NSString stringWithFormat:@"node/%@/comments", nid];
-  [self setMethodUrl:url];
-  [self addParam:nid forKey:@"nid"];
-  [self addParam:start forKey:@"start"];
-  [self addParam:count forKey:@"count"];
-  [self runMethod];
-  return [self connResult];
+- (NSDictionary *)getComments:(NSString*)nid andStart:(NSString *)start andCount:(NSString *)count {
+//    [self setMethod:@"comment.loadNodeComments"];
+    [self setRequestMethod:@"GET"];
+    NSString *url = [NSString stringWithFormat:@"node/%@/comments", nid];
+    [self setMethodUrl:url];
+    [self addParam:nid forKey:@"nid"];
+    [self addParam:start forKey:@"start"];
+    [self addParam:count forKey:@"count"];
+    [self runMethod];
+    return [self connResult];
 }
+
+- (NSArray *)allCommentsForNodeID:(NSString*)nid {
+//    [self setMethod:@"comment.index"];
+    [self setRequestMethod:@"GET"];
+    [self setMethodUrl:[NSString stringWithFormat:@"comment?fields=*&parameters[nid]=%@", nid]];
+    [self runMethod];
+    return (NSArray *)[self connResult];
+}
+
 - (NSDictionary *) getComment:(NSString*)cid {
-  [self setMethod:@"comment.load"];
-  [self setRequestMethod:@"GET"];
-  [self setMethodUrl:[NSString stringWithFormat:@"comment/%@", cid]];
-  [self addParam:cid forKey:@"cid"];
-  [self runMethod];
-  return [self connResult];
+//    [self setMethod:@"comment.load"];
+    [self setRequestMethod:@"GET"];
+    [self setMethodUrl:[NSString stringWithFormat:@"comment/%@", cid]];
+    [self addParam:cid forKey:@"cid"];
+    [self runMethod];
+    return [self connResult];
 }
 
-- (NSDictionary *) getCommentCountForNid:(NSString*)nid {
-  [self setMethod:@"comment.countAll"];
-  [self setRequestMethod:@"POST"];
-  [self setMethodUrl:@"comment/countAll"];
-  [self addParam:nid forKey:@"nid"];
-  [self runMethod];
-  return [self connResult];
+- (NSInteger) getCommentCountForNid:(NSString*)nid {
+//    [self setMethod:@"comment.countAll"];
+    [self setRequestMethod:@"POST"];
+    [self setMethodUrl:@"comment/countAll"];
+    [self addParam:nid forKey:@"nid"];
+    [self runMethod];
+    return [[self connResult] intValue];
 }
-- (NSDictionary *) getCommentCountNewForNid:(NSString*)nid {
-  [self setMethod:@"comment.countNew"];
-  [self setRequestMethod:@"POST"];
-  [self setMethodUrl:@"comment/countNew"];
-  [self addParam:nid forKey:@"nid"];
-  [self runMethod];
-  return [self connResult];
+
+- (NSInteger) getCommentCountNewForNid:(NSString*)nid {
+//    [self setMethod:@"comment.countNew"];
+    [self setRequestMethod:@"POST"];
+    [self setMethodUrl:@"comment/countNew"];
+    [self addParam:nid forKey:@"nid"];
+    [self runMethod];
+    return [[self connResult] intValue];
 }
-- (void) addComment:(NSString*)nid subject:(NSString*)aSubject body:(NSString*)aBody {
-  [self setMethod:@"comment.save"];
-  [self setMethodUrl:@"comment"];
-  if(![nid isEqualToString:@""]) 
-  [self addParam:nid forKey:@"nid"];
-  if(aSubject != nil)
-    [self addParam:aSubject forKey:@"subject"];
-  if(aBody != nil) {
-    NSDictionary *bodyValues = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:aBody, nil] forKeys:[NSArray arrayWithObjects:@"value", nil]];
-    NSDictionary *languageDict = [NSDictionary dictionaryWithObject:[NSArray arrayWithObject:bodyValues] forKey:DRUPAL_LANGUAGE];
-    [self addParam:languageDict forKey:@"comment_body"];
-    [self addParam:DRUPAL_LANGUAGE forKey:@"language"];
-  }
-  if([[self userInfo] objectForKey:@"uid"] != nil) {
-    id temp = [[self userInfo] objectForKey:@"uid"];
-    [self addParam:[temp stringValue] forKey:@"uid"];
-  }    
-  if([[self userInfo] objectForKey:@"name"] != nil) {
-    id temp = [[self userInfo] objectForKey:@"name"];
-    [self addParam:temp forKey:@"name"];
-  }
-  [self addParam:@"en" forKey:@"language"];
-  [self runMethod];
-  return;
+
+- (NSDictionary *) addComment:(NSString*)nid subject:(NSString*)aSubject body:(NSString*)aBody {
+//    [self setMethod:@"comment.save"];
+    [self setMethodUrl:@"comment"];
+    if(![nid isEqualToString:@""]) 
+        [self addParam:nid forKey:@"nid"];
+    if(aSubject != nil)
+        [self addParam:aSubject forKey:@"subject"];
+    if(aBody != nil) {
+        NSDictionary *bodyValues = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:aBody, nil] forKeys:[NSArray arrayWithObjects:@"value", nil]];
+        NSDictionary *languageDict = [NSDictionary dictionaryWithObject:[NSArray arrayWithObject:bodyValues] forKey:DRUPAL_LANGUAGE];
+        [self addParam:languageDict forKey:@"comment_body"];
+        [self addParam:DRUPAL_LANGUAGE forKey:@"language"];
+    }
+    if([[self userInfo] objectForKey:@"uid"] != nil) {
+        id temp = [[self userInfo] objectForKey:@"uid"];
+        [self addParam:[temp stringValue] forKey:@"uid"];
+    }    
+    if([[self userInfo] objectForKey:@"name"] != nil) {
+        id temp = [[self userInfo] objectForKey:@"name"];
+        [self addParam:temp forKey:@"name"];
+    }
+    [self runMethod];
+    return [self connResult];
 }
+
+- (NSDictionary *)addComment:(NSDictionary *)comment {
+//    [self setMethod:@"comment.save"];
+    [self setMethodUrl:@"comment"];
+    [self addParam:comment forKey:@"comment"];
+    [self runMethod];    
+    return (NSDictionary *)[self connResult];
+}
+
 - (void) updateComment:(NSString*)cid subject:(NSString*)aSubject body:(NSString*)aBody {
-  [self setMethod:@"comment.save"];
-  [self setMethodUrl:[NSString stringWithFormat:@"comment/%@", cid]];
-  [self setRequestMethod:@"PUT"];
-  NSMutableDictionary *comment = [[NSMutableDictionary alloc] init];
-  if(![cid isEqualToString:@""]) 
-    [comment setObject:cid forKey:@"cid"];
-  if(aSubject != nil)
-    [comment setObject:aSubject forKey:@"subject"];
-  if(aBody != nil) {
-    NSDictionary *bodyValues = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:aBody, nil] forKeys:[NSArray arrayWithObjects:@"value", nil]];
-    NSDictionary *languageDict = [NSDictionary dictionaryWithObject:[NSArray arrayWithObject:bodyValues] forKey:DRUPAL_LANGUAGE];
-    [comment setObject:languageDict forKey:@"comment_body"];
-    [comment setObject:DRUPAL_LANGUAGE forKey:@"language"];
-  }
-  if([[self userInfo] objectForKey:@"uid"] != nil) {
-    id temp = [[self userInfo] objectForKey:@"uid"];
-    [comment setObject:[temp stringValue] forKey:@"uid"];
-  }    
-  if([[self userInfo] objectForKey:@"name"] != nil) {
-    id temp = [[self userInfo] objectForKey:@"name"];
-    [comment setObject:temp forKey:@"name"];
-  }
-  [self runMethod];
-  return;
+//    [self setMethod:@"comment.update"];
+    [self setMethodUrl:[NSString stringWithFormat:@"comment/%@", cid]];
+    [self setRequestMethod:@"PUT"];
+    NSMutableDictionary *comment = [[NSMutableDictionary alloc] init];
+    if(![cid isEqualToString:@""]) 
+        [comment setObject:cid forKey:@"cid"];
+    if(aSubject != nil)
+        [comment setObject:aSubject forKey:@"subject"];
+    if(aBody != nil) {
+        NSDictionary *bodyValues = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:aBody, nil] forKeys:[NSArray arrayWithObjects:@"value", nil]];
+        NSDictionary *languageDict = [NSDictionary dictionaryWithObject:[NSArray arrayWithObject:bodyValues] forKey:DRUPAL_LANGUAGE];
+        [comment setObject:languageDict forKey:@"comment_body"];
+        [comment setObject:DRUPAL_LANGUAGE forKey:@"language"];
+    }
+    if([[self userInfo] objectForKey:@"uid"] != nil) {
+        id temp = [[self userInfo] objectForKey:@"uid"];
+        [comment setObject:[temp stringValue] forKey:@"uid"];
+    }    
+    if([[self userInfo] objectForKey:@"name"] != nil) {
+        id temp = [[self userInfo] objectForKey:@"name"];
+        [comment setObject:temp forKey:@"name"];
+    }
+    [self runMethod];
+    return;
+}
+
+- (id)updateComment:(NSString*)cid withData:(NSDictionary *)data {
+//    [self setMethod:@"comment.update"];
+    [self setMethodUrl:[NSString stringWithFormat:@"comment/%@", cid]];
+    [self setRequestMethod:@"PUT"];
+    [self addParam:cid forKey:@"cid"];
+    [self addParam:data forKey:@"comment"];
+    [self runMethod];    
+    return [self connResult];
+}
+
+- (BOOL)deleteComment:(NSString*)cid {
+//    [self setMethod:@"comment.delete"];
+    [self setRequestMethod:@"DELETE"];
+    [self setMethodUrl:[NSString stringWithFormat:@"comment/%@", cid]];
+    [self runMethod];
+    return [[self connResult] boolValue];
 }
 
 @end

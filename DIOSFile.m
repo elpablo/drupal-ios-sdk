@@ -40,33 +40,41 @@
 
 @implementation DIOSFile
 
--(id) init {
-  [super init];
-  return self;
+- (id)init {
+    self = [super init];
+    return self;
 }
-- (NSDictionary *) fileSave:(NSMutableDictionary *)fileDict {
-  [self setMethod:@"file.save"];
-  [self setParams:fileDict];
-  [self setMethodUrl:@"file"];
-  [self runMethod];
-  return [self connResult];
+
+- (NSDictionary *)fileSave:(NSMutableDictionary *)fileDict {
+//    [self setMethod:@"file.save"];
+    [self setParams:fileDict];
+    [self setMethodUrl:@"file"];
+    [self runMethod];
+    return [self connResult];
 }
-- (NSDictionary *) fileGet:(NSString *)fid {
-  [self setMethod:@"file.get"];
-  [self setRequestMethod:@"GET"];
-  [self setMethodUrl:[NSString stringWithFormat:@"file/%@", fid]];
-  [self addParam:fid forKey:@"fid"];
-  [self addParam:@"1" forKey:@"file_contents"];
-  [self runMethod];
-  return [self connResult];
+
+- (NSDictionary *)fileGet:(NSString *)fid {
+    return [self fileGet:fid includeFileContent:YES];
 }
-- (NSDictionary *) fileGetNodeFiles:(NSString *)nid {
-  [self setMethod:@"file.getNodeFiles"];
-  [self setRequestMethod:@"POST"];
-  [self setMethodUrl:@"file/nodeFiles"];
-  [self addParam:nid forKey:@"nid"];
-  [self addParam:[NSNumber numberWithInt:1] forKey:@"file_contents"];
-  [self runMethod];
-  return [self connResult];
+
+- (NSDictionary *)fileGet:(NSString *)fid includeFileContent:(BOOL)fc {
+//    [self setMethod:@"file.get"];
+    [self setRequestMethod:@"GET"];
+    [self setMethodUrl:[NSString stringWithFormat:@"file/%@", fid]];
+    [self addParam:fid forKey:@"fid"];
+    [self addParam:fc?@"1":@"0" forKey:@"file_contents"];
+    [self runMethod];
+    return [self connResult];
 }
+
+- (NSDictionary *)fileGetNodeFiles:(NSString *)nid {
+//    [self setMethod:@"file.getNodeFiles"];
+    [self setRequestMethod:@"POST"];
+    [self setMethodUrl:@"file/nodeFiles"];
+    [self addParam:nid forKey:@"nid"];
+    [self addParam:[NSNumber numberWithInt:1] forKey:@"file_contents"];
+    [self runMethod];
+    return [self connResult];
+}
+
 @end

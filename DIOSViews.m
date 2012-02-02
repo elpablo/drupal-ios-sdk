@@ -40,20 +40,31 @@
 
 
 @implementation DIOSViews
-- (id) init {
-    [super init];
-    [self setMethod:@"views.get"];
-    return self;
-}
-- (void) initViews {
-    [self setMethod:@"views.get"];
+
+- (void)initViews {
+//    [self setMethod:@"views.get"];
+    [self setRequestMethod:@"GET"];
     [self setMethodUrl:@"views"];
 }
--(NSDictionary *) viewsGet:(NSString *)viewName {
-  [self setMethod:@"views.get"];
-  [self setRequestMethod:@"GET"];
-  [self setMethodUrl:[NSString stringWithFormat:@"views/%@", viewName]];
-  [self runMethod];
-  return [self connResult];
+
+- (NSArray *)viewsGet:(NSString *)viewName {
+//    [self setMethod:@"views.get"];
+    [self setRequestMethod:@"GET"];
+    [self setMethodUrl:[NSString stringWithFormat:@"views/%@", viewName]];
+    [self runMethod];
+    return (NSArray *)[self connResult];
 }
+
+- (NSArray *)viewsGet:(NSString *)viewName andArguments:(NSString *)args {
+//    [self setMethod:@"views.get"];
+    [self setRequestMethod:@"GET"];
+    NSString *mURL = [NSString stringWithFormat:@"views/%@", viewName];
+    if (![args isEqualToString:@""]) {
+        mURL = [mURL stringByAppendingFormat:@"?%@", args];
+    }
+    [self setMethodUrl:mURL];
+    [self runMethod];
+    return (NSArray *)[self connResult];
+}
+
 @end

@@ -40,35 +40,35 @@
 
 @implementation DIOSTaxonomy
 - (id) init {
-  [super init];
-  return self;
+    self = [super init];
+    return self;
 }
-- (NSDictionary *)getTree:(NSString*)vid {
-  return [self getTree:vid withParent:nil andMaxDepth:nil];
+- (NSArray *)getTree:(NSString*)vid {
+    return [self getTree:vid withParent:nil andMaxDepth:nil];
 }
-- (NSDictionary *)getTree:(NSString*)vid withParent:(NSString*)parent andMaxDepth:(NSString*)maxDepth {
-  [self setMethod:@"taxonomy.getTree"];
-  [self setRequestMethod:@"POST"];
-  [self setMethodUrl:@"taxonomy_vocabulary/getTree"];
-  if (vid != nil) {
-    [self addParam:vid forKey:@"vid"];
-    
-    if (parent != nil) {
-      [self addParam:parent forKey:@"parent"];
+- (NSArray *)getTree:(NSString*)vid withParent:(NSString*)parent andMaxDepth:(NSString*)maxDepth {
+//    [self setMethod:@"taxonomy.getTree"];
+    [self setRequestMethod:@"POST"];
+    [self setMethodUrl:@"taxonomy_vocabulary/getTree"];
+    if (vid != nil) {
+        [self addParam:vid forKey:@"vid"];
+
+        if (parent != nil) {
+            [self addParam:parent forKey:@"parent"];
+        }
+        if (maxDepth != nil) {
+            [self addParam:maxDepth forKey:@"max_depth"];
+        }    
+
+        [self runMethod];
+
+        return (NSArray *)[self connResult];
     }
-    if (maxDepth != nil) {
-      [self addParam:maxDepth forKey:@"max_depth"];
-    }    
-    
-    [self runMethod];
-    
-    return [self connResult];
-  }
-  //vid is required
-  return nil;
+    //vid is required
+    return nil;
 }
 - (NSArray *)selectNodes:(NSString*)tid {
-  return [self selectNodes:tid andLimit:nil pager:FALSE andOrder:nil];
+    return [self selectNodes:tid andLimit:nil pager:FALSE andOrder:nil];
 }
 /* 
  * selectNodes
@@ -76,42 +76,100 @@
  * tids and fields should be comma seperated
  */
 - (NSArray *)selectNodes:(NSString*)tid andLimit:(NSString*)limit pager:(BOOL)pager andOrder:(NSString*)anOrder {
-  [self setMethod:@"taxonomy.selectNodes"];
-  [self setRequestMethod:@"POST"];
-  [self setMethodUrl:@"taxonomy_term/selectNodes"];
-  if (tid != nil) {
-    [self addParam:tid forKey:@"tid"];
+//    [self setMethod:@"taxonomy.selectNodes"];
+    [self setRequestMethod:@"POST"];
+    [self setMethodUrl:@"taxonomy_term/selectNodes"];
+    if (tid != nil) {
+        [self addParam:tid forKey:@"tid"];
 
-    if (limit != nil) {
-      [self addParam:limit forKey:@"depth"];
+        if (limit != nil) {
+            [self addParam:limit forKey:@"depth"];
+        }
+        if (anOrder != nil) {
+            [self addParam:limit forKey:@"order"];
+        }
+        if (pager == NO) {
+            [self addParam:[NSNumber numberWithInt:0]  forKey:@"pager"];
+        } else {
+            if (pager == YES) {
+                [self addParam:[NSNumber numberWithInt:1]  forKey:@"pager"];
+            }
+        }
+        [self runMethod];
+        if([[self connResult] isKindOfClass:[NSString class]]) {
+            if([(NSString *)[self connResult] isEqualToString:@""]) {
+                return nil;
+            }
+        }
+        return (NSArray *)[self connResult];
     }
-    if (anOrder != nil) {
-      [self addParam:limit forKey:@"order"];
-    }
-    if (pager == NO) {
-      [self addParam:[NSNumber numberWithInt:0]  forKey:@"pager"];
-    } else {
-      if (pager == YES) {
-        [self addParam:[NSNumber numberWithInt:1]  forKey:@"pager"];
-      }
-    }
-    [self runMethod];
-    if([[self connResult] isKindOfClass:[NSString class]]) {
-      if([(NSString *)[self connResult] isEqualToString:@""]) {
-        return nil;
-      }
-    }
-    return (NSArray *)[self connResult];
-  }
-  //tid is required
-  return nil;
+    //tid is required
+    return nil;
 }
 
 - (NSDictionary *)getTerm:(NSString*)tid {
-    [self setMethod:@"taxonomy_term.get"];
+//    [self setMethod:@"taxonomy_term.get"];
     [self setRequestMethod:@"GET"];
     [self setMethodUrl:[NSString stringWithFormat:@"taxonomy_term/%@", tid]];
     [self runMethod];
     return [self connResult];
 }
+
+- (NSDictionary *)createVocabulary:(NSString *)name {
+    NSMutableDictionary *vocabulary = [[[NSMutableDictionary alloc] init] autorelease];
+    [vocabulary setObject:name forKey:@"name"];
+    
+//    [self setMethod:@"taxonomy_vocabulary.save"];
+    [self setMethodUrl:@"taxonomy_vocabulary"];
+    [self setRequestMethod:@"POST"];
+    [self addParam:vocabulary forKey:@"vocabulary"]; 
+    [self runMethod];
+    return (NSDictionary *)[self connResult];
+}
+
+- (id)createTermInVocabulary:(NSMutableDictionary*)term {    
+//    [self setMethod:@"taxonomy_term.save"];
+    [self setMethodUrl:@"taxonomy_term"];
+    [self setRequestMethod:@"POST"];
+    [self addParam:term forKey:@"term"]; 
+    [self runMethod];
+    return [self connResult];
+}
+
+- (NSDictionary *)updateVocabulary:(NSString *)vid withFields:(NSMutableDictionary *)items {
+//    [self setMethod:@"taxonomy_vocabulary.update"];
+    [self setMethodUrl:@"taxonomy_vocabulary"];
+    [self setRequestMethod:@"POST"];
+    [self addParam:vid forKey:@"vid"]; 
+    [self addParam:items forKey:@"vocabulary"]; 
+    [self runMethod];
+    return (NSDictionary *)[self connResult];
+}
+
+- (void)deleteTerm:(NSString*)tid {
+//    [self setMethod:@"taxonomy_term.delete"];
+    [self setRequestMethod:@"DELETE"];
+    [self setMethodUrl:[NSString stringWithFormat:@"taxonomy_term/%@", tid]];
+    [self runMethod];
+}
+
+- (NSDictionary *)getVocabulary: (NSString *) vid {
+    if(vid != @"") {
+//        [self setMethod:@"taxonomy_vocabulary.get"];
+        [self setRequestMethod:@"GET"];
+        [self setMethodUrl:[NSString stringWithFormat:@"taxonomy_vocabulary/%@", vid]];   
+        [self runMethod];
+        return (NSDictionary *)[self connResult];
+    }
+    return nil;
+}
+
+- (NSArray *)allVocabulary {
+//    [self setMethod:@"taxonomy_vocabulary.get"];
+    [self setRequestMethod:@"GET"];
+    [self setMethodUrl:@"taxonomy_vocabulary"];        
+    [self runMethod];
+    return (NSArray *)[self connResult];
+}
+
 @end
