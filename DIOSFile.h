@@ -42,7 +42,7 @@
 
 - (NSDictionary *)fileSave:(NSMutableDictionary *)fileDict;
 - (NSDictionary *)fileGet:(NSString *)fid;
-- (NSDictionary *)fileGet:(NSString *)fid includeFileContent:(BOOL)fc;
+- (NSDictionary *)fileGet:(NSString *)fid withFileContent:(BOOL)fc;
 - (NSDictionary *)fileGetNodeFiles:(NSString *)nid;
 
 @end

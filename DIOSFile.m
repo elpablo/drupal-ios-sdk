@@ -54,15 +54,14 @@
 }
 
 - (NSDictionary *)fileGet:(NSString *)fid {
-    return [self fileGet:fid includeFileContent:YES];
+	return [self fileGet:fid withFileContent:YES];
 }
 
-- (NSDictionary *)fileGet:(NSString *)fid includeFileContent:(BOOL)fc {
+- (NSDictionary *)fileGet:(NSString *)fid withFileContent:(BOOL)fc {
 //    [self setMethod:@"file.get"];
     [self setRequestMethod:@"GET"];
-    [self setMethodUrl:[NSString stringWithFormat:@"file/%@", fid]];
-    [self addParam:fid forKey:@"fid"];
-    [self addParam:fc?@"1":@"0" forKey:@"file_contents"];
+    NSString *file_contents = fc ? @"1" : @"0";
+    [self setMethodUrl:[NSString stringWithFormat:@"file/%@?file_contents=%@", fid, file_contents]];
     [self runMethod];
     return [self connResult];
 }
