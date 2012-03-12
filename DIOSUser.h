@@ -40,6 +40,8 @@
 
 @interface DIOSUser : DIOSConnect
 
+@property (nonatomic, readonly, getter = isAuthenticated) BOOL authenticated;
+
 - (NSDictionary *)loginWithUsername:(NSString*)userName andPassword:(NSString*)password;
 - (NSDictionary *)logout;
 
@@ -49,5 +51,6 @@
 - (NSDictionary *)userDelete:(NSString*)uid;
 
 - (NSDictionary *)setRoles:(NSDictionary *)userRoles forUser:(NSString*)uid;
+- (BOOL)isRole:(NSString *)r;
 
 @end

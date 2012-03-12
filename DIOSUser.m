@@ -38,8 +38,14 @@
 
 
 @implementation DIOSUser
+
+@synthesize authenticated = _authenticated;
+
 - (id)init {
     self = [super init];
+    if (self) {
+        _authenticated = NO;
+    }
     return self;
 }
 
@@ -49,6 +55,7 @@
     [self addParam:userName forKey:@"username"];
     [self addParam:password forKey:@"password"];
     [self runMethod];
+    _authenticated = self.error == nil;
     return [self connResult];
 }
 
@@ -56,6 +63,7 @@
 //  [self setMethod:@"user.logout"];
   [self setMethodUrl:@"user/logout"];
   [self runMethod];
+    _authenticated = self.error != nil;
   return [self connResult];
 }
 
@@ -84,6 +92,21 @@
     
     [self runMethod];
     return (NSDictionary *)[self connResult];
+}
+
+- (BOOL)isRole:(NSString *)r {
+    NSDictionary *userDic = self.userInfo;
+    id roles = [userDic objectForKey:@"roles"];
+    NSUInteger idx = NSNotFound;
+    NSString *role = nil;
+    for (NSString *roleKey in roles) {
+        role = [roles objectForKey:roleKey];
+        if ([role isEqualToString:r]) {
+            idx = 1;
+            break;
+        }
+    }
+    return idx != NSNotFound;
 }
 
 - (NSDictionary *)userSave:(NSMutableDictionary *)userDict {
