@@ -81,18 +81,7 @@
     [self runMethod];
     return [self connResult];
 }
-- (NSDictionary *)nodeUpdate:(NSString *)nid withField:(NSMutableDictionary *)fields {
-//    [self setMethod:@"node.update"];
-    [self setMethodUrl:@"node"];
-    if (nid != nil && ![nid isEqualToString:@""]) {
-        [self setMethodUrl:[NSString stringWithFormat:@"node/%@", nid]];
-        [self setRequestMethod:@"PUT"];
-    }
-    [self addParam:nid forKey:@"nid"]; 
-    [self addParam:fields forKey:@"node"]; 
-    [self runMethod];
-    return (NSDictionary *)[self connResult];
-}
+
 - (NSArray *)nodeGetIndex {
 //    [self setMethod:@"node.get"];
     [self setRequestMethod:@"GET"];

@@ -46,7 +46,6 @@
 - (NSArray *)nodeSearchFromTitle:(NSString *)title;
 
 - (NSDictionary *)nodeSave:(NSMutableDictionary *)node;
-- (NSDictionary *)nodeUpdate:(NSString *)nid withField:(NSMutableDictionary *)fields;
 
 - (NSDictionary *)nodeDelete:(NSString *)nid;
 
