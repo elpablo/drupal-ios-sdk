@@ -119,15 +119,11 @@
     
     [self setError:nil];
 
-    // Removing 2 additional params but seems no needed anymore in drupal 7
-    // Adding those 2 parameters the function
-    // _services_arg_value($myVar, 'myVar');
-    // inside the services callbacks doesn't work, because receive an array with more then 1 component returning the whole array.
     [self removeParam:@"sessid"];
-//    [self removeParam:@"method"];
-  
-    NSString *url = [NSString stringWithFormat:@"%@/%@", self.serverUrl ? self.serverUrl : DRUPAL_SERVICES_URL, [self methodUrl]];
-  
+    
+    NSString *service_url = (self.serverUrl != nil) ? self.serverUrl : DRUPAL_SERVICES_URL;
+    NSString *url = [NSString stringWithFormat:@"%@/%@", service_url, [self methodUrl]];
+
     ASIHTTPRequest *requestBinary = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
 
     NSString *errorStr;
@@ -171,8 +167,9 @@
             }
         } else {
             NSError *e = [NSError errorWithDomain:@"DIOS-Error" 
-                                       code:1 
-                                   userInfo:[NSDictionary dictionaryWithObject:@"I couldnt get a response, is the site down?" forKey:NSLocalizedDescriptionKey]];
+                                             code:1 
+                                         userInfo:[NSDictionary dictionaryWithObject:@"I couldnt get a response, is the site down?" 
+                                                                              forKey:NSLocalizedDescriptionKey]];
 			[self setError:e];
 		}
 		
@@ -190,7 +187,7 @@
                 }
             }
             if([[self methodUrl] isEqualToString:@"user/login"]) {
-                if(plist != nil) {					
+                if(plist != nil) {
                     [self setSessid:[plist objectForKey:@"sessid"]];
                     [self setUserInfo:[plist objectForKey:@"user"]];
                 }
@@ -211,24 +208,24 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
-- (NSString *)buildParams {
-    NSString *finalParams;
-    NSMutableArray *arrayofParams = nil;
-    NSEnumerator *enumerator = [params keyEnumerator];
-    NSString *aKey = nil;
-    NSString *value = nil;
-    while ( (aKey = [enumerator nextObject]) != nil) {
-        value = [params objectForKey:aKey];
-        [arrayofParams addObject:[NSString stringWithFormat:@"&%@=%@", aKey, value]];
-    }
-
-    finalParams = [arrayofParams componentsJoinedByString:@""];
-    NSString *finalParamsString = @"";
-    for (NSString *string in arrayofParams) {
-        finalParamsString = [finalParamsString stringByAppendingString:string];
-    }
-    return finalParams;
-}
+//- (NSString *)buildParams {
+//    NSString *finalParams;
+//    NSMutableArray *arrayofParams = nil;
+//    NSEnumerator *enumerator = [params keyEnumerator];
+//    NSString *aKey = nil;
+//    NSString *value = nil;
+//    while ( (aKey = [enumerator nextObject]) != nil) {
+//        value = [params objectForKey:aKey];
+//        [arrayofParams addObject:[NSString stringWithFormat:@"&%@=%@", aKey, value]];
+//    }
+//
+//    finalParams = [arrayofParams componentsJoinedByString:@""];
+//    NSString *finalParamsString = @"";
+//    for (NSString *string in arrayofParams) {
+//        finalParamsString = [finalParamsString stringByAppendingString:string];
+//    }
+//    return finalParams;
+//}
 
 - (void)addParam:(id)value forKey:(NSString *)key {
     if(value != nil) {

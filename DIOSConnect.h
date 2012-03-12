@@ -59,7 +59,7 @@
 
 - (void)runMethod;
 
-- (NSString *)buildParams;
+//- (NSString *)buildParams;
 - (void)addParam:(id)value forKey:(NSString *)key;
 - (void)removeParam:(NSString *)key;
 
