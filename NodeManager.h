@@ -41,6 +41,9 @@
 - (BOOL)saveNode:(NSMutableDictionary *)data;
 - (void)deleteNode:(NSDictionary *)nodeDic;
 
+//////////////////////////////////// Views management
+- (NSArray *)viewElementsWithName:(NSString *)name andParameters:(NSString *)params;
+
 //////////////////////////////////// Vocabulary management
 - (NSArray *)allVocabulary;
 - (NSDictionary *)vocabularyByName:(NSString *)name;

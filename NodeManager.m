@@ -108,6 +108,16 @@ static NodeManager *sharedInstance = nil;
     return _node;
 }
 
+#pragma mark - Views Management
+
+- (NSArray *)viewElementsWithName:(NSString *)name andParameters:(NSString *)params {
+    DIOSViews *views = [[[DIOSViews alloc] initWithSession:self.userSession] autorelease];
+    if (params) {
+        return [views viewsGet:name andArguments:[params stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    } else {
+        return [views viewsGet:name];
+    }
+}
 
 #pragma mark - Node management
 
