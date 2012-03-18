@@ -40,13 +40,13 @@
 #import "DIOSConfig.h"
 
 @implementation DIOSComment
+
 - (id)init {
     self = [super init];
     return self;
 }
 
 - (NSDictionary *)getComments:(NSString*)nid andStart:(NSString *)start andCount:(NSString *)count {
-//    [self setMethod:@"comment.loadNodeComments"];
     [self setRequestMethod:@"GET"];
     NSString *url = [NSString stringWithFormat:@"node/%@/comments", nid];
     [self setMethodUrl:url];
@@ -58,15 +58,13 @@
 }
 
 - (NSArray *)allCommentsForNodeID:(NSString*)nid {
-//    [self setMethod:@"comment.index"];
     [self setRequestMethod:@"GET"];
     [self setMethodUrl:[NSString stringWithFormat:@"comment?fields=*&parameters[nid]=%@", nid]];
     [self runMethod];
     return (NSArray *)[self connResult];
 }
 
-- (NSDictionary *) getComment:(NSString*)cid {
-//    [self setMethod:@"comment.load"];
+- (NSDictionary *)getComment:(NSString*)cid {
     [self setRequestMethod:@"GET"];
     [self setMethodUrl:[NSString stringWithFormat:@"comment/%@", cid]];
     [self addParam:cid forKey:@"cid"];
@@ -74,8 +72,7 @@
     return [self connResult];
 }
 
-- (NSInteger) getCommentCountForNid:(NSString*)nid {
-//    [self setMethod:@"comment.countAll"];
+- (NSInteger)getCommentCountForNid:(NSString*)nid {
     [self setRequestMethod:@"POST"];
     [self setMethodUrl:@"comment/countAll"];
     [self addParam:nid forKey:@"nid"];
@@ -83,8 +80,7 @@
     return [[self connResult] intValue];
 }
 
-- (NSInteger) getCommentCountNewForNid:(NSString*)nid {
-//    [self setMethod:@"comment.countNew"];
+- (NSInteger)getCommentCountNewForNid:(NSString*)nid {
     [self setRequestMethod:@"POST"];
     [self setMethodUrl:@"comment/countNew"];
     [self addParam:nid forKey:@"nid"];
@@ -92,8 +88,7 @@
     return [[self connResult] intValue];
 }
 
-- (NSDictionary *) addComment:(NSString*)nid subject:(NSString*)aSubject body:(NSString*)aBody {
-//    [self setMethod:@"comment.save"];
+- (NSDictionary *)addComment:(NSString*)nid subject:(NSString*)aSubject body:(NSString*)aBody {
     [self setMethodUrl:@"comment"];
     if(![nid isEqualToString:@""]) 
         [self addParam:nid forKey:@"nid"];
@@ -118,15 +113,13 @@
 }
 
 - (NSDictionary *)addComment:(NSDictionary *)comment {
-//    [self setMethod:@"comment.save"];
     [self setMethodUrl:@"comment"];
     [self addParam:comment forKey:@"comment"];
     [self runMethod];    
     return (NSDictionary *)[self connResult];
 }
 
-- (void) updateComment:(NSString*)cid subject:(NSString*)aSubject body:(NSString*)aBody {
-//    [self setMethod:@"comment.update"];
+- (void)updateComment:(NSString*)cid subject:(NSString*)aSubject body:(NSString*)aBody {
     [self setMethodUrl:[NSString stringWithFormat:@"comment/%@", cid]];
     [self setRequestMethod:@"PUT"];
     NSMutableDictionary *comment = [[NSMutableDictionary alloc] init];
@@ -149,11 +142,11 @@
         [comment setObject:temp forKey:@"name"];
     }
     [self runMethod];
+    [comment release];
     return;
 }
 
 - (id)updateComment:(NSString*)cid withData:(NSDictionary *)data {
-//    [self setMethod:@"comment.update"];
     [self setMethodUrl:[NSString stringWithFormat:@"comment/%@", cid]];
     [self setRequestMethod:@"PUT"];
     [self addParam:cid forKey:@"cid"];
@@ -163,7 +156,6 @@
 }
 
 - (BOOL)deleteComment:(NSString*)cid {
-//    [self setMethod:@"comment.delete"];
     [self setRequestMethod:@"DELETE"];
     [self setMethodUrl:[NSString stringWithFormat:@"comment/%@", cid]];
     [self runMethod];
